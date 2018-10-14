@@ -1,0 +1,26 @@
+# Eclipse Files #
+# directories #
+.settings/
+target/
+bin/
+# files #
+.classpath
+.project
+
+# GIT file #
+.gitignore
+
+# Log file #
+*.log
+
+# Compiled class file #
+*.class
+
+# Package Files #
+# *.jar
+# *.war
+# *.nar
+# *.ear
+# *.zip
+# *.tar.gz
+# *.rar

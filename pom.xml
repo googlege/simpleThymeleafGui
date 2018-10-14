@@ -12,6 +12,7 @@
    
     <modules>
 		<module>/simpleThymeleafGuiInMemory</module>
- 	</modules>
+		<module>/simpleThymeleafGuiInMemoryDB</module>
+	</modules>
 
 </project>

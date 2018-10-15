@@ -13,6 +13,7 @@
     <modules>
 		<module>/simpleThymeleafGuiInMemory</module>
 		<module>/simpleThymeleafGuiInMemoryDB</module>
+		<module>/simpleThymeleafGuiSearch</module>
 	</modules>
 
 </project>

@@ -1,9 +1,10 @@
 package de.homedev.thymeleaf.simplegui.form;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -14,56 +15,48 @@ import de.homedev.thymeleaf.simplegui.service.IPersonService;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component
 public class PersonForm {
-    private List<PersonEntity> personList = null;
-    private PersonEntity selectedPerson = new PersonEntity();
-    private SearchDto searchDto = new SearchDto();
+	private Page<PersonEntity> personList = null;
+	private PersonEntity selectedPerson = new PersonEntity();
+	private SearchDto searchDto = new SearchDto();
+	private Pageable pageable = PageRequest.of(0, 5);
 
-    public List<PersonEntity> getPersonList(IPersonService personService) {
-        if (this.personList == null) {
-            this.personList = personService.findAll();
-        }
-        return personList;
-    }
+	public Page<PersonEntity> getPersonList(IPersonService personService) {
+		if (this.personList == null) {
+			this.personList = personService.findAll(pageable);
+		}
+		return personList;
+	}
 
-    public List<PersonEntity> getPersonList() {
-        return personList;
-    }
+	public Page<PersonEntity> getPersonList() {
+		return personList;
+	}
 
-    public void setPersonList(List<PersonEntity> personList) {
-        this.personList = personList;
-    }
+	public void setPersonList(Page<PersonEntity> personList) {
+		this.personList = personList;
+	}
 
-    public PersonEntity getSelectedPerson() {
-        return selectedPerson;
-    }
+	public PersonEntity getSelectedPerson() {
+		return selectedPerson;
+	}
 
-    public void setSelectedPerson(PersonEntity selectedPerson) {
-        this.selectedPerson = selectedPerson;
-    }
+	public void setSelectedPerson(PersonEntity selectedPerson) {
+		this.selectedPerson = selectedPerson;
+	}
 
-    public SearchDto getSearchDto() {
-        return searchDto;
-    }
+	public SearchDto getSearchDto() {
+		return searchDto;
+	}
 
-    public void setSearchDto(SearchDto searchDto) {
-        this.searchDto = searchDto;
-    }
+	public void setSearchDto(SearchDto searchDto) {
+		this.searchDto = searchDto;
+	}
 
-    //	public PersonEntity savePerson(PersonEntity person) {
-    //		PersonEntity result = personService.save(person);
-    //		persons.clear();
-    //		persons.addAll(personService.findAll());
-    //		return result;
-    //	}
-    //
-    //	public void deletePerson(Long id) {
-    //		personService.deleteById(id);
-    //		persons.clear();
-    //		persons.addAll(personService.findAll());
-    //	}
-    //
-    //	public PersonEntity findPerson(Long id) {
-    //		return personService.getOne(id);
-    //	}
+	public Pageable getPageable() {
+		return pageable;
+	}
+
+	public void setPageable(Pageable pageable) {
+		this.pageable = pageable;
+	}
 
 }

@@ -36,7 +36,13 @@
                <th></th>
                <th></th>
             </tr>
-            <tr th:each ="person : ${personForm.getPersonList()}">
+            <th:block th:each ="person : ${personForm.getPersonList()}">
+            <tr th:id="|${person.id}|"
+                th:onclick="|HighLightTR(this,${person.id});|" 
+                onMouseOver="this.bgColor = '#C0C0C0'"
+                onMouseOut ="HighLightTROnMouseOut(this)"
+                bgcolor="#F1F5FF">
+                
                <td th:utext="${person.firstName}">...</td>
                <td th:utext="${person.lastName}">...</td>
                <td>
@@ -52,7 +58,48 @@
                   </form> 
                </td>
             </tr>
+            </th:block>
          </table>
       </div>
+      
+
+
+<script th:inline="javascript">
+var selBgColor='#c9cc99';
+var selTxtColor='#FFFFFF';
+var orgBgColor='#F1F5FF';
+var orgTxtColor='#F1F5FF';
+var selEntityId;
+var selRowId;
+var preEl;
+function HighLightTR(el, entityId){
+  selEntityId = entityId;
+  
+  if(typeof(preEl)!='undefined') {
+      try{ChangeTextColor(preEl, orgBgColor, orgTxtColor);}catch(e){;}
+  }
+  try{ChangeTextColor(el, selBgColor, selTxtColor);}catch(e){;}
+  preEl = el;
+  selRowId = el.id;
+}
+
+function HighLightTROnMouseOut(el){
+	if (el.id==selRowId){
+		try{ChangeTextColor(el,selBgColor,selTxtColor);}catch(e){;}
+	}
+	 else{
+		 try{ChangeTextColor(el,orgBgColor,orgTxtColor);}catch(e){;}
+	} 
+}
+
+function ChangeTextColor(el,bColor,tColor){
+   el.bgColor = bColor;
+   for (i=0;i<a_obj.cells.length;i++){
+	     a_obj.cells(i).style.color=tColor;
+   }
+}
+</script>
+
+      
    </body>
 </html>

@@ -2,6 +2,8 @@ package de.homedev.thymeleaf.simplegui.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,12 +16,10 @@ import de.homedev.thymeleaf.simplegui.model.PersonEntity;
 @Repository
 @Transactional(propagation = Propagation.MANDATORY)
 public interface PersonDao extends JpaRepository<PersonEntity, Long> {
-    @Query("SELECT p FROM PersonEntity p WHERE p.firstName LIKE :firstName")
-    public List<PersonEntity> findByFirstName(@Param("firstName") String firstName);
 
-    @Query("SELECT p FROM PersonEntity p WHERE p.lastName LIKE :lastName")
-    public List<PersonEntity> findByLastName(@Param("lastName") String lastName);
+	@Query("SELECT p FROM PersonEntity p WHERE p.firstName LIKE :firstName AND p.lastName LIKE :lastName")
+	public List<PersonEntity> findByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-    @Query("SELECT p FROM PersonEntity p WHERE p.firstName LIKE :firstName AND p.lastName LIKE :lastName")
-    public List<PersonEntity> findByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+	@Query("SELECT p FROM PersonEntity p WHERE p.firstName LIKE :firstName AND p.lastName LIKE :lastName")
+	public Page<PersonEntity> findByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName, Pageable pageable);
 }

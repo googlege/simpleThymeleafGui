@@ -46,10 +46,14 @@ public class MainController {
 	}
 
 	@RequestMapping(value = { "/personList" }, method = RequestMethod.GET)
-	public String personList(Model model) {
+	public String personList(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
 		data.getPersonList(personService);
-		final int currentPage = data.getPageable().getPageNumber() + 1;
-		final int pageSize = data.getPageable().getPageSize();
+		final int currentPage = page.isPresent() ? page.get() : data.getPageable().getPageNumber() + 1;
+		final int pageSize = size.isPresent() ? size.get() : data.getPageable().getPageSize();
+		if ((currentPage != data.getPageable().getPageNumber() + 1) || (pageSize != data.getPageable().getPageSize())) {
+			data.setPageable(PageRequest.of(currentPage - 1, pageSize));
+			data.setPersonList(personService.findAll(data.getSearchDto(), data.getPageable()));
+		}
 		model.addAttribute("page", currentPage);
 		model.addAttribute("size", pageSize);
 		if (data.getPersonList().getTotalPages() > 0) {
@@ -61,10 +65,9 @@ public class MainController {
 	}
 
 	@RequestMapping(value = { "/filterList" }, method = RequestMethod.POST)
-	public String showNewPersonPage(Model model, @ModelAttribute("personForm") PersonForm personForm, @RequestParam("page") Optional<Integer> page,
-			@RequestParam("size") Optional<Integer> size) {
-		final int currentPage = 1;
-		final int pageSize = size.isPresent() ? size.get() : data.getPageable().getPageNumber();
+	public String showNewPersonPage(Model model, @ModelAttribute("personForm") PersonForm personForm) {
+		int currentPage = 1;
+		final int pageSize = data.getPageable().getPageSize();
 		data.setSearchDto(personForm.getSearchDto());
 		data.setPageable(PageRequest.of(currentPage - 1, pageSize));
 		data.setPersonList(personService.findAll(data.getSearchDto(), data.getPageable()));

@@ -29,6 +29,15 @@
       </div>  
       <br/><br/>
       <div>
+          <div 
+              th:if="${pageNumbers!=null}"
+              th:each="pageNumber : ${pageNumbers}"
+              style="display: inline-block;">
+              <a th:href="@{/personList(size=${size}, page=${pageNumber})}"
+              th:text=${pageNumber}
+              th:style="|font-weight: ${pageNumber==page ? 'bold' : 'normal'} ; |">
+             </a>
+          </div>
          <table border="1">
             <tr>
                <th>First Name</th>
@@ -60,7 +69,16 @@
             </tr>
             </th:block>
          </table>
-      </div>
+         <div 
+              th:if="${pageNumbers!=null}"
+              th:each="pageNumber : ${pageNumbers}"
+              style="display: inline-block;">
+              <a th:href="@{/personList(size=${size}, page=${pageNumber})}"
+              th:text=${pageNumber}
+              th:style="|font-weight: ${pageNumber==page ? 'bold' : 'normal'} ; |">
+             </a>
+         </div>
+    </div>
       
 
 

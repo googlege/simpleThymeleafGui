@@ -14,6 +14,8 @@
 		<module>/simpleThymeleafGuiInMemory</module>
 		<module>/simpleThymeleafGuiInMemoryDB</module>
 		<module>/simpleThymeleafGuiSearch</module>
+		<module>/simpleThymeleafPaging</module>
+		<module>/simpleThymeleafInternation</module>
 	</modules>
 
 </project>

@@ -13,6 +13,7 @@ import org.thymeleaf.util.StringUtils;
 import de.homedev.thymeleaf.simplegui.dao.PersonDao;
 import de.homedev.thymeleaf.simplegui.model.PersonEntity;
 import de.homedev.thymeleaf.simplegui.model.SearchDto;
+import de.homedev.thymeleaf.simplegui.service.api.IPersonService;
 
 @Service(IPersonService.SERVICE_NAME)
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)

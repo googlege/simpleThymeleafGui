@@ -10,7 +10,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import de.homedev.thymeleaf.simplegui.model.PersonEntity;
 import de.homedev.thymeleaf.simplegui.model.SearchDto;
-import de.homedev.thymeleaf.simplegui.service.IPersonService;
+import de.homedev.thymeleaf.simplegui.service.api.IPersonService;
 
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component

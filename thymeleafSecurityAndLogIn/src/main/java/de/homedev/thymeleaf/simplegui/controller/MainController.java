@@ -5,43 +5,33 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.homedev.thymeleaf.simplegui.config.MessageComponent;
 import de.homedev.thymeleaf.simplegui.form.PersonForm;
 import de.homedev.thymeleaf.simplegui.model.PersonEntity;
-import de.homedev.thymeleaf.simplegui.service.IPersonService;
+import de.homedev.thymeleaf.simplegui.service.api.IPersonService;
 
 @Controller
-public class MainController {
+public class MainController extends AbstractController {
 
-	// Inject via application.properties
-	@Value("${welcome.message}")
-	private String message;
-
-	@Value("${error.message}")
-	private String errorMessage;
-
-	@Resource
-	private PersonForm data;
+	private final PersonForm data;
+	private final IPersonService personService;
 
 	@Autowired
-	private IPersonService personService;
+	public MainController(PersonForm data, IPersonService personService, MessageComponent messageComponent) {
+		super(messageComponent);
+		this.data = data;
+		this.personService = personService;
+	}
 
 	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
 	public String index(Model model) {
-
-		model.addAttribute("message", message);
-
 		return "index";
 	}
 
@@ -95,7 +85,7 @@ public class MainController {
 
 	@RequestMapping(value = { "/editPerson" }, method = RequestMethod.POST)
 	public String savePerson(Model model, //
-			@ModelAttribute("personForm") PersonForm personForm) {
+			final RedirectAttributes redirectAttributes, @ModelAttribute("personForm") PersonForm personForm) {
 		String firstName = personForm.getSelectedPerson().getFirstName();
 		String lastName = personForm.getSelectedPerson().getLastName();
 		if (firstName != null && firstName.length() > 0 //
@@ -104,8 +94,8 @@ public class MainController {
 			data.setPersonList(personService.findAll(data.getSearchDto(), data.getPageable()));
 			return "redirect:/personList";
 		}
-
-		model.addAttribute("errorMessage", errorMessage);
+		model.addAttribute("errorMessage", getMessageComponent().getMessage("error.message"));
+		this.addSuccessMessageAndTranslate("error.message", redirectAttributes);
 		return "addPerson";
 	}
 

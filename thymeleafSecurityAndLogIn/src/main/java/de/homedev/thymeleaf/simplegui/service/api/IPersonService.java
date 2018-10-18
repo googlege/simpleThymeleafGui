@@ -1,4 +1,4 @@
-package de.homedev.thymeleaf.simplegui.service;
+package de.homedev.thymeleaf.simplegui.service.api;
 
 import java.util.List;
 

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Welcome</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../../css/style.css"/>
+      <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../css/bootstrap.min.css" />
+   </head>
+   <body>
+
+      <h1>Welcome</h1>
+      <h2 th:utext="#{welcome.message}">..!..</h2>
+       
+      <a th:href="@{/personList}">Person List</a>
+      
+      <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+      </form>  
+       
+   </body>
+    
+</html>

@@ -3,4 +3,6 @@ simpleThymeleafGuiInMemoryDB -> Extended simpleThymeleafGuiInMemory implementati
 simpleThymeleafGuiSearch -> Extended simpleThymeleafGuiInMemoryDB implementation
 simpleThymeleafPaging -> Extended simpleThymeleafGuiSearch implementation
 simpleThymeleafInternation -> Extended simpleThymeleafPaging implementation
+thymeleafSecurityAndLogIn -> Extended simpleThymeleafInternation implementation
+thymeleafMenue            -> Extended thymeleafSecurityAndLogIn implementation
 ....

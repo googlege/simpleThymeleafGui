@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Add Person</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/materialize.min.css}"/>
+   </head>
+   <body>
+      <h1>Save a Person:</h1>
+       
+      <!--  
+         In Thymeleaf the equivalent of
+         JSP's ${pageContext.request.contextPath}/edit.html
+         would be @{/edit.html}         
+         -->
+          
+      <form th:action="@{/editPerson}"
+         th:object="${personForm}" method="POST">
+         First Name:
+         <input type="text" th:field="*{selectedPerson.firstName}" />    
+         <br/>
+         Last Name:
+         <input type="text" th:field="*{selectedPerson.lastName}" />     
+         <br/>
+         <input type="hidden"  th:field="*{selectedPerson.id}" />
+         <input type="hidden"  th:field="*{selectedPerson.version}" />
+         <input type="submit" value="Save" />
+      </form>
+       
+      <br/>
+       
+      <!-- Check if errorMessage is not null and not empty -->
+       
+      <div th:if="${errorMessage}" th:utext="${errorMessage}"
+         style="color:red;font-style:italic;">
+         ...
+      </div>
+
+      
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+
+  
+  <!--/*@thymesVar id="error" type="java.lang.String"*/-->
+  <script th:inline="javascript" th:if="${error}" type="text/javascript">
+    var toastHTML = /*[[${error}]]*/ "Fehler";
+    M.toast({html: toastHTML, displayLength: 4000, classes: 'red lighten-1'});
+  </script>
+  
+  <!--/*@thymesVar id="success" type="java.lang.String"*/-->
+  <script th:inline="javascript" th:if="${success}" type="text/javascript">
+    var toastHTML = /*[[${success}]]*/ "Erfolg";
+    M.toast({html: toastHTML, displayLength: 4000, classes: 'green lighten-1'});
+  </script>

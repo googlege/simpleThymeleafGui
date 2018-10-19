@@ -83,13 +83,15 @@ public class MainController extends AbstractController {
     @RequestMapping(value = {
             "/deletePerson"
     }, method = RequestMethod.GET)
-    public String deletePerson(Model model, @RequestParam(required = false) Long selectedPersonId) {
+    public String deletePerson(Model model,
+                               final RedirectAttributes redirectAttributes,
+                               @RequestParam(required = false) Long selectedPersonId) {
         personService.deleteById(selectedPersonId);
         final int currentPage = 1;
         final int pageSize = data.getPageable().getPageSize();
         data.setPageable(PageRequest.of(currentPage - 1, pageSize));
         data.setPersonList(personService.findAll(data.getSearchDto(), data.getPageable()));
-
+        this.addSuccessMessageAndTranslate("success.delete", redirectAttributes);
         return "redirect:personList";
     }
 
@@ -105,10 +107,11 @@ public class MainController extends AbstractController {
             && lastName != null && lastName.length() > 0) {
             personService.save(personForm.getSelectedPerson());
             data.setPersonList(personService.findAll(data.getSearchDto(), data.getPageable()));
+            this.addSuccessMessageAndTranslate("success.save", redirectAttributes);
             return "redirect:/personList";
         }
         model.addAttribute("errorMessage", getMessageComponent().getMessage("error.message"));
-        this.addSuccessMessageAndTranslate("error.message", redirectAttributes);
+        this.addErrorMessageAndTranslate("error.message", redirectAttributes);
         return "addPerson";
     }
 

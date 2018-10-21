@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="default-head(title, additionalLinks)">
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+ 
+  <title th:text="|#{mainLayout.sitePrefix} - ${title}|">Room - Main</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="../../resources/images/favicon.ico" th:href="@{/images/favicon.ico}"/>
+
+  <link href="../../resources/css/material-icons.css" th:href="@{/css/material-icons.css}" rel="stylesheet"/>
+  <link href="../../resources/css/compiled.css" th:href="@{/css/compiled.css}" type="text/css"
+        rel="stylesheet" media="screen,projection"/>
+
+  <th:block th:replace="${additionalLinks}"/>
+</head>
+<body>
+<!--/*@thymesVar id="currentUser" type="de.homedev.thymeleaf.simplegui.model.UserEntity"*/-->
+<nav th:fragment="header(navdrawerContent)"
+     th:classappend="${#arrays.contains(@environment.getActiveProfiles(),'dev') ? 'nav-extended' : ''}">
+  <div class="nav-wrapper container">
+    <a th:href="@{/}" class="logo-container brand-logo">
+      <img src="../../resources/images/logo_white.png" th:src="@{/images/logo_white.png}" width="242" height="46" alt="logo"/>
+    </a>
+    <ul class="right hide-on-med-and-down">
+
+      <li>
+        <a class="waves-effect" th:href="@{'/'}">
+          <i class="material-icons">home</i>
+          <span th:text="${currentUser.getMandant().getName()}">
+            Mandant
+          </span>
+        </a>
+      </li>
+
+      <li>
+        <a class="dropdown-button waves-effect " id="menuDropdownLink" data-activates="menuDropdown">
+          <i class="material-icons">menu</i>
+          <th:block th:text="#{mainLayout.navigation.menu}">Menü</th:block>
+          <i class="material-icons right">arrow_drop_down</i>
+        </a>
+      </li>
+
+      <li id="profile-dropdown-link">
+        <a class="dropdown-button waves-effect" data-activates="profileDropdown">
+          <i class="material-icons">person</i>
+          <div class="profile-dropdown">
+            <span class="userName no-padding" th:text="${currentUser.getDisplayName()}">Max</span><br/>
+            <span class="user-role no-padding" th:text="#{|userdetails.role.${currentUser.getRole().getAuthority()}|}">Objektleiter</span>
+          </div>
+          <i class="material-icons right">arrow_drop_down</i>
+        </a>
+      </li>
+    </ul>
+
+    <!--/* Menü Dropdown */-->
+    <ul id="menuDropdown" class="dropdown-content">
+      <th:block th:fragment="menu">
+        <th:block>
+          <li>
+            <a class="waves-effect " th:text="#{mainLayout.menuDropdown.personList}" th:href="@{/personList}">personList</a>
+          </li>
+        </th:block>
+      </th:block>
+    </ul>
+
+    <ul id="profileDropdown" class="dropdown-content">
+      <th:block th:fragment="profile-menu">
+        <li>
+          <form class="" id="logout-form" th:action="@{/logout}" method="post">
+            <a class="waves-effect" id="logout-link" onclick="$('form#logout-form').submit()" onkeypress="$('form#logout-form').submit()"
+               th:text="#{mainLayout.user.logout}">Logout</a>
+          </form>
+        </li>
+      </th:block>
+    </ul>
+
+    <ul id="nav-mobile" class="side-nav">
+      <li>
+        <a class="waves-effect" th:href="@{'/'}">
+          <i class="material-icons">home</i>
+          <th:block th:text="${currentUser.getMandant().getName()}">Home</th:block>
+        </a>
+      </li>
+      <li class="divider"></li>
+      <th:block th:replace="${navdrawerContent}">
+        <li>Additional Content</li>
+      </th:block>
+      <li class="divider" th:if="${navdrawerContent.getTemplateModel()}"></li>
+      <th:block th:replace=" :: menu"></th:block>
+      <li class="divider"></li>
+      <li>
+        <div class="userView">
+          <div class="background white"></div>
+          <i class="material-icons">person</i>
+          <span class="userName" th:text="${currentUser.getDisplayName()}">Max</span>
+        </div>
+      </li>
+      <th:block th:replace=" :: profile-menu"></th:block>
+    </ul>
+    <a id="nav-mobile-link" data-activates="nav-mobile" class="button-collapse right"><i class="material-icons">menu</i></a>
+  </div>
+  <div th:if="${#arrays.contains(@environment.getActiveProfiles(),'dev')}" class="nav-content center red">
+    <span style="line-height: 4ex;">DEVELOPMENT VERSION</span>
+  </div>
+</nav>
+
+<th:block th:fragment="breadcrumbs">
+  <div class="breadcrumbs col s12 m12 l12">
+    <th:block th:each="step : ${breadcrumbs}">
+      <a th:if="${step.link}"
+         href="#!" class="breadcrumb"
+         th:href="@{__${step.link}__}" th:text="__${step.label}__">
+        Label linked
+      </a>
+      <span th:unless="${step.link}"
+            th:text="__${step.label}__" class="breadcrumb">
+        Label without link
+      </span>
+    </th:block>
+  </div>
+</th:block>
+
+<th:block th:fragment="footer">
+  <div id="profileDialog" class="modal">
+    <div class="modal-content">
+      <h4 th:text="#{mainLayout.profileDialog.title}">Benutzerprofil</h4>
+      <div class="row">
+        <div class="col s5 right-align" th:text="|#{mainLayout.profileDialog.label.username}:|">Benutzername:</div>
+        <div class="col s7" th:text="|${currentUser.getDisplayName()}|">Bob</div>
+      </div>
+      <div class="row">
+        <div class="col s5 right-align" th:text="|#{mainLayout.profileDialog.label.rolle}:|">Rolle:</div>
+        <div class="col s7" th:text="#{|userdetails.role.${currentUser.getRole().getAuthority()}|}">Objektleiter</div>
+      </div>
+      <div class="row">
+        <div class="col s5 right-align"
+             th:text="|#{mainLayout.profileDialog.label.mandant}:| ">Mandant:
+        </div>
+        <div class="col s7"
+             th:text="${currentUser.getMandant()}? |${currentUser.getMandant().getName()}| : |#{mainLayout.profileDialog.value.noMandant}|">
+          -
+        </div>
+      </div>
+      <div class="row valign-wrapper">
+        <div class="col s5 right-align valign" th:text="|#{mainLayout.profileDialog.language.label}|">Sprache:</div>
+        <div class="col s7 valign">
+          <form action="" method="get">
+            <select id="language-select" name="lang" onchange="this.form.submit()">
+              <option value="de" th:text="#{mainLayout.profileDialog.language.de}" th:selected="${#locale.language == 'de'}">Deutsch
+              </option>
+              <option value="en" th:text="#{mainLayout.profileDialog.language.en}" th:selected="${#locale.language == 'en'}">Englisch
+              </option>
+              <option value="fr" th:text="#{mainLayout.profileDialog.language.fr}" th:selected="${#locale.language == 'fr'}">Französisch
+              </option>
+            </select>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect btn-flat" th:text="#{mainLayout.profileDialog.close}">Schließen</a>
+    </div>
+  </div>
+</th:block>
+
+<th:block th:fragment="scripts">
+  <!--  Scripts-->
+  <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1-1/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+  <script type="text/javascript" src="../../resources/js/materialize/bin/materialize.min.js"
+          th:src="@{/js/materialize/bin/materialize.min.js}"></script>
+  
+
+
+
+
+ <!--/*@thymesVar id="error" type="java.lang.String"*/-->
+  <script th:inline="javascript" th:if="${error}" type="text/javascript">
+    var message = /*[[${error}]]*/ "Fehler";
+    Materialize.toast(message, 5000, 'red lighten-1');
+  </script>
+  
+  <!--/*@thymesVar id="success" type="java.lang.String"*/-->
+  <script th:inline="javascript" th:if="${success}" type="text/javascript">
+    var message = /*[[${success}]]*/ "Erfolg";
+    Materialize.toast(message, 5000, 'green lighten-1');
+  </script>
+  
+  
+</th:block>
+</body>
+</html>

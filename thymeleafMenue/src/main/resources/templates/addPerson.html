@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head
+	th:replace="fragments/mainLayout :: default-head(#{index.site.title}, ~{})">
+
+</head>
+<body>
+	<div th:replace="fragments/mainLayout :: header(~{::link})">
+
+		<link rel="stylesheet" type="text/css"
+			th:href="@{/webjars/leaflet/1.3.1/leaflet.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+	</div>
+
+	<div class="container">
+		<!--/*@thymesVar id="currentUser" type="de.homedev.thymeleaf.simplegui.model.UserEntity"*/-->
+		<h3 th:text="|#{index.welcome} ${currentUser.getDisplayName()}!|">Willkommen,
+			Oliver!</h3>
+
+		<div class="row">
+			<h1>Save a Person:</h1>
+
+			<!--  
+         In Thymeleaf the equivalent of
+         JSP's ${pageContext.request.contextPath}/edit.html
+         would be @{/edit.html}         
+         -->
+
+			<form th:action="@{/editPerson}" th:object="${personForm}"
+				method="POST">
+				First Name: <input type="text"
+					th:field="*{selectedPerson.firstName}" /> <br /> Last Name: <input
+					type="text" th:field="*{selectedPerson.lastName}" /> <br /> <input
+					type="hidden" th:field="*{selectedPerson.id}" /> <input
+					type="hidden" th:field="*{selectedPerson.version}" /> <input
+					type="submit" value="Save" />
+			</form>
+
+			<br />
+
+			<!-- Check if errorMessage is not null and not empty -->
+
+			<div th:if="${errorMessage}" th:utext="${errorMessage}"
+				style="color: red; font-style: italic;">...</div>
+		</div>
+	</div>
+
+
+	<div th:replace="fragments/mainLayout :: footer"></div>
+	<div th:replace="fragments/mainLayout :: scripts"></div>
+	<script th:src="@{/webjars/leaflet/1.3.1/leaflet.js}"></script>
+</body>
+</html>

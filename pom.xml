@@ -16,7 +16,8 @@
 		<module>/simpleThymeleafGuiSearch</module>
 		<module>/simpleThymeleafPaging</module>
 		<module>/simpleThymeleafInternation</module>
-		<module>thymeleafSecurityAndLogIn</module>
+		<module>/thymeleafSecurityAndLogIn</module>
+		<module>/thymeleafMenue</module>
 	</modules>
 
 </project>

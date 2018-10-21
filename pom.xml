@@ -18,6 +18,8 @@
 		<module>/simpleThymeleafInternation</module>
 		<module>/thymeleafSecurityAndLogIn</module>
 		<module>/thymeleafMenue</module>
+		<module>/thymeleaf3Layers</module>
+		
 	</modules>
 
 </project>

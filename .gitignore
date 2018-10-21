@@ -18,6 +18,7 @@ bin/
 *.class
 
 # Package Files #
+*.gz
 # *.jar
 # *.war
 # *.nar

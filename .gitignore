@@ -18,6 +18,7 @@ bin/
 *.class
 
 # Package Files #
+*.gz
 # *.jar
 # *.war
 # *.nar
@@ -25,3 +26,5 @@ bin/
 # *.zip
 # *.tar.gz
 # *.rar
+/thymeleaf3LayersSeparated/frontend/*.gz
+/thymeleaf3LayersSeparated/backend/*.gz

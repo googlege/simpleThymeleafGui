@@ -6,6 +6,7 @@ bin/
 # files #
 .classpath
 .project
+.springBeans
 
 # GIT file #
 .gitignore
